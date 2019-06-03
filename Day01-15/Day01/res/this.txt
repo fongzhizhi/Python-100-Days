@@ -1,0 +1,43 @@
+# 原文
+The Zen of Python, by Tim Peters
+
+Beautiful is better than ugly.
+Explicit is better than implicit.
+Simple is better than complex.
+Complex is better than complicated.
+Flat is better than nested.
+Sparse is better than dense.
+Readability counts.
+Special cases aren't special enough to break the rules.
+Although practicality beats purity.
+Errors should never pass silently.
+Unless explicitly silenced.
+In the face of ambiguity, refuse the temptation to guess.
+There should be one-- and preferably only one --obvious way to do it.
+Although that way may not be obvious at first unless you're Dutch.
+Now is better than never.
+Although never is often better than *right* now.
+If the implementation is hard to explain, it's a bad idea.
+If the implementation is easy to explain, it may be a good idea.
+Namespaces are one honking great idea -- let's do more of those!
+
+#--------------------------------------
+
+# 翻译
+Python哲学
+		---Tim Peters
+优雅胜过拙劣
+明确优于含蓄
+简洁优于复杂
+复杂好过困惑
+浅显优于嵌套
+稀疏好过密集
+
+可读性十分重要
+特殊性不足以打破规则
+尽管实用性大于纯粹性，但不应让眼前的错误默默流过
+拒绝模棱两可，一个问题最好只有一个最优解
+尽管毫无作为不会出错，立即行动好过啥也不做
+难以解释的行为不是好行为，易于解释的做法才可能是最优解
+使用命名空间是个很赞的做法
+让我们在这些Python哲学中做更多的事吧!
