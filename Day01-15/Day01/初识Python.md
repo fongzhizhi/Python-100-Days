@@ -101,7 +101,15 @@ print('注释')
 
    执行结果：
 
-   [查看原文和翻译]()
+   [查看原文和翻译](https://github.com/fongzhizhi/Python-100-Days/blob/master/Day01-15/Day01/res/this.txt)
 
-2. 
+2. 使用`turtle`绘制图形（了解）
+
+   `Turtle`是Python内置的标准库，可用于绘制各种形状和图案。想象在互
+
+   [官方文档：turtle海龟绘图](https://docs.python.org/zh-cn/3.7/library/turtle.html)
+
+   
+
+   
 
