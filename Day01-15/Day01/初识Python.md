@@ -105,11 +105,8 @@ print('注释')
 
 2. 使用`turtle`绘制图形（了解）
 
-   `Turtle`是Python内置的标准库，可用于绘制各种形状和图案。想象在互
+   `Turtle`是Python内置的标准库，可用于绘制各种形状和图案。想象在画布中有一只turtle（海龟），我们控制代码让它移动起来，海龟走过的轨迹就绘制成了一幅图案。
 
-   [官方文档：turtle海龟绘图](https://docs.python.org/zh-cn/3.7/library/turtle.html)
+   更多细节请参考：[官方文档：turtle海龟绘图](https://docs.python.org/zh-cn/3.7/library/turtle.html)
 
-   
-
-   
 
