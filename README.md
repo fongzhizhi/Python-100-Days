@@ -21,3 +21,13 @@
 
 + if语句的使用
 
+[Day04 - 循环](https://github.com/fongzhizhi/Python-100-Days/tree/master/Day01-15/Day04)
+
++ for-in的使用
++ while的使用
+
+[Day05 - 构造程序逻辑练习](https://github.com/fongzhizhi/Python-100-Days/tree/master/Day01-15/Day05)
+
+- 基础练习 - 水仙花数 / 完美数 / 五人分鱼 / Fibonacci数列 / 回文素数
+- 综合练习 - Craps赌博游戏
+
