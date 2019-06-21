@@ -38,3 +38,16 @@
 + 用模块管理函数
 + 变量作用域
 
+[Day07 - 字符串和常用的数据结构](https://github.com/fongzhizhi/Python-100-Days/tree/master/Day01-15/Day07)
+
++ 字符串的使用
++ 列表的使用
++ 元组的使用
++ 集合的使用
++ 字典的使用
+
+[Day08 - 面向对象编程](https://github.com/fongzhizhi/Python-100-Days/tree/master/Day01-15/Day08)
+
++ 面向对象编程基础
++ 类的创建和使用
+
