@@ -86,7 +86,7 @@ class Rules():
 			end += aver
 		return result
 
-	#抢地主:返回下标
+	#抢地主:返回下标(重复代码过多，可优化)
 	@staticmethod
 	def grab(players, there_card):
 		max_index = random.randint(0, 2)
@@ -134,14 +134,18 @@ class Player():
 	"""Player
 		name:昵称
 		card:牌
-		mates:队友
 		is_robot:机器人
+		is_load:地主
 	"""
-	def __init__(self, name, card, mates = [], is_robot = False):
+	def __init__(self, name, card, is_robot = False, is_load = False):
 		self.name = name
 		self.card = card
-		self.mates = mates
 		self.is_robot = is_robot
+		self.is_load = is_load
+	
+	@property
+	def cardnum(self):
+		return len(self.card.card_list)
 
 	#抓牌(多张)
 	def push(self, cards):
@@ -177,8 +181,8 @@ def main():
 	ok_cards = Rules.Licensing(holeCard)
 	there_card = ok_cards[3] #地主牌
 	#初始化三个玩家，并发牌
-	print('游戏开始，发牌中...')
 	name = input('what\'s your name:')
+	print('【游戏开始，发牌中...】')
 	player = Player(name, PokerCard(ok_cards[0]))
 	c1 = Player('C1', PokerCard(ok_cards[1]))
 	c2 = Player('C2', PokerCard(ok_cards[2]))
@@ -187,10 +191,24 @@ def main():
 	print('你拿到的牌为：')
 	print(player.card)
 	#抢地主
-	player = [player, c1, c2]
-	load_index = Rules.grab(player, there_card)
-	print('%s抢到了地主，地主牌为%s' % (player[load_index].name ,there_card.__str__()))
-	
+	print('【开始抢地主...】')
+	players = [player, c1, c2]
+	now_index = Rules.grab(players, there_card)
+	players[now_index].is_load = True
+	print('%s抢到了地主，地主牌为%s' % (players[now_index].name ,there_card.__str__()))
+	#战斗
+	while players[now_index].cardnum <= 0:
+		#robot auto playing
+		if players[now_index].is_robot:
+			pass
+		else:
+			pass
+	#战况
+	print('【游戏结束，%s获胜!】' % players[now_index].name)
+	for p in players:
+		print('%s剩余的牌为:' % p.name)
+		print(p.card)
+
 
 
 
