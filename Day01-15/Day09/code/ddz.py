@@ -96,7 +96,7 @@ class Rules():
 		if max_point == 3:
 			players[max_index].push(there_card)
 			return max_index
-		elif max_point in allowList and max_point == 2 or max_point == 1:
+		elif max_point in allowList and (max_point == 2 or max_point == 1):
 			allowList.remove(max_point)
 		
 		if max_index == 0:
@@ -116,7 +116,7 @@ class Rules():
 		if now_point > max_point:
 			max_index = now_point
 			max_index = second
-		if max_point in allowList and max_point == 2 or max_point == 1:
+		if max_point in allowList and (max_point == 2 or max_point == 1):
 			allowList.remove(max_point)
 
 		now_point = players[third].callPoint(allowList)
@@ -127,8 +127,59 @@ class Rules():
 			players[max_index].push(there_card)
 			return max_index
 
+	@staticmethod
+	def fixed_index(now_index):
+		index = now_index
+		if now_index > 2:
+			index = now_index % 3
+		elif now_index < 0:
+			index = -index
+			index = Rules.fixed_index(index)
+		return index
 
+	@staticmethod
+	def getKindOfCards(cards):
+		kind = -1
+		l = len(cards)
+		if l == 0 or l == 1:
+			kind = l
+		elif l == 2 and cards[0] == cards[1]:
+			kind = l
+		elif l == 3 and cards[0] == cards[1] and cards[0] == cards[2]:
+			kind = l
+		elif l == 4 and cards[0] == cards[1] and cards[0] == cards[2] and cards[2] == cards[3]:
+			kind = l
+		return kind
 
+	@staticmethod
+	def getWeightOfCards(cards, pc):
+		return pc.getWeight(cards[0])
+
+	@staticmethod
+	def auto_play(cards, last_i, now_i, players):
+		result = [cards, last_i]
+		if len(cards) == 0 or players[last_i].name == players[now_i].name:
+			#自由出牌
+			kind = 0
+			weight = -1
+		else:
+			#根据大小出
+			kind = Rules.getKindOfCards(cards)
+			weight = Rules.getWeightOfCards(cards, players[now_i].card)
+
+		min_card = players[now_i].get_min_weight_cards(kind, weight)
+		if len(min_card) > 0:
+			result[0] = min_card
+			result[1] = now_i
+		return result
+
+	@staticmethod
+	def another_index(players, now_i):
+		while True:
+			now_i += 1
+			now_i = Rules.fixed_index(now_i)
+			if not players[now_i].is_load:
+				return now_i
 
 class Player():
 	"""Player
@@ -172,7 +223,21 @@ class Player():
 				num = int(input())
 		print('%s:%d分' % (self.name, num))
 		return num;
-
+	def get_min_weight_cards(self, kind, weight=-1):
+		if kind < 0:
+			return []
+		if kind == 0:
+			for card in self.card.card_obj:
+				l = self.card.card_obj[card]
+				if l > 0:
+					return [card] * l
+		result = []
+		for card in self.card.card_obj:
+			l = self.card.card_obj[card]
+			if l > kind-1 and self.card.getWeight(card) > weight:
+				result = [card] * kind
+				break;
+		return result
 	
 def main():
 	#整副牌,洗牌
@@ -196,24 +261,41 @@ def main():
 	now_index = Rules.grab(players, there_card)
 	players[now_index].is_load = True
 	print('%s抢到了地主，地主牌为%s' % (players[now_index].name ,there_card.__str__()))
+	last_cards = []
+	last_index = now_index
+	play_result = []
+	gameover = False
 	#战斗
-	while players[now_index].cardnum <= 0:
+	while not gameover:
 		#robot auto playing
 		if players[now_index].is_robot:
-			pass
+			play_result = Rules.auto_play(last_cards, last_index, now_index, players)
 		else:
-			pass
+			play_result = Rules.auto_play(last_cards, last_index, now_index, players)
+
+		last_cards = play_result[0]
+		last_index = play_result[1]
+		if last_index == now_index and len(last_cards) > 0:
+			players[now_index].pop(last_cards)
+			cards_str = last_cards.__str__()
+			print('%s: %s' % (players[now_index].name, cards_str[1:len(cards_str)-1]))
+		else:
+			print('%s: 过!' % players[now_index].name)
+		
+		if players[now_index].cardnum <= 0:
+			gameover = True
+		else:
+			now_index += 1
+			now_index = Rules.fixed_index(now_index)
 	#战况
-	print('【游戏结束，%s获胜!】' % players[now_index].name)
+	if players[now_index].is_load:
+		print('【游戏结束，地主%s获胜!】' % players[now_index].name)
+	else:
+		print('【游戏结束，%s和%s获胜!】' % (players[now_index].name, players[Rules.another_index(players, now_index)].name))
+	
 	for p in players:
 		print('%s剩余的牌为:' % p.name)
 		print(p.card)
-
-
-
-
-
-
 
 if __name__ == '__main__':
 	main()
