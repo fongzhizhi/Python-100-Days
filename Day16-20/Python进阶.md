@@ -424,3 +424,234 @@ if __name__ == '__main__':
 
 （以上来自维基百科）
 
+### 4、函数的使用方式
+
+#### 将函数视为“一等公民”
+
++ 函数可以赋值给变量
++ 函数和作为函数的参数
++ 函数可作为函数的返回值
+
+#### 高级函数之map & filter以及替代品
+
+##### map
+
+`map`函数用来遍历给定序列并返回遍历后的计算值所组成的迭代器（2.x是直接返回列表）
+
+语法：
+
+> map(function, iterable, ...)
+
+参数：
+
+function：第一个参数为操作序列元素的函数，序列元素作为函数参数进行计算
+
+iterable：有限个可迭代对象，作为函数处理的参数
+
+返回值：2.x版本返回新的列表，3.x返回迭代器
+
+示例如下：
+
+```python
+def main():
+    
+	def square(x):
+		return x ** 2
+	
+	list1 = map(square, [1, 2, 3, 4, 5]) #返回参数列表平方
+	print(list(list1)) #[1, 4, 9 ,16 ,25]
+
+	list2 = map(lambda x,y:x + y, [1, 2, 3, 4, 5], [6, 7, 8]) #使用匿名函数, 返回列表和
+	print(list(list2)) #[7, 9, 11]
+
+if __name__ == '__main__':
+	main()
+```
+
+##### filter
+
+`filter`函数用于过滤给定序列中符合条件的元素，返回新的序列。
+
+语法：
+
+> filter(function, iterable)
+
+参数：
+
+function：过滤元素的函数，判断元素是否符合过滤条件
+
+iterable：迭代对象
+
+实例：
+
+```python
+def main():
+
+	def filterFunc(x):
+		return x % 3 == 0
+	
+	list1 = filter(filterFunc, [1, 3, 5, 7, 9])
+	print(list(list1)) #[3, 9]
+
+if __name__ == '__main__':
+	main()
+```
+
+##### 结合使用以及替代写法
+
+```python
+def main():
+    
+	list1 = map(lambda x: x ** 2, filter(lambda x:x % 2 == 0, range(0, 10)))
+	list2 = [x ** 2 for x in range(0, 10) if x % 2 == 0]
+	print(list(list1)) #替代写法
+	print(list2)
+	
+
+if __name__ == '__main__':
+	main()
+```
+
+#### 位置参数、可变参数、关键字参数、命名关键字参数
+
+##### 位置参数
+
+位置参数就是最基本的参数形式，按照函数定义时的参数位置进行传入。
+
+```python
+#name和age的位置固定，使用这个函数fun也需要根据定义的位置传入
+def fun(name, age)
+	pass
+```
+
+##### 默认参数
+
+当参数有默认值时我们就不需要特殊处理和传入，我们可以使用默认参数来实现：
+
+```python
+#默认age参数为18
+def fun(name, age=18):
+    print('name=%s, age=%d' % (name, age))
+
+#使用：
+fun('jinx', 20)
+fun('yasuo')
+```
+
+需要注意的是，位置参数必须写在默认参数之前，下面这种写法就会报错：
+
+```python
+#错误的参数定义
+def fun(age=18, name)
+	pass
+```
+
+##### 关键字参数
+
+用于函数调用而非定义，使用”键=值“的形式进行参数调用。使用关键字参数的优点是：参数的含义更清晰；无需考虑位置参数的限制。
+
+需要注意的是：关键字参数和位置参数同样能混合使用，但是位置参数必须写在关键字参数之前。写在后面的关键字参数无需考虑顺序。
+
+```python
+def fun(name, age):
+	print('name=%s, age=%d' % (name, age))
+    
+#使用关键字参数
+fun(name='jinx', age=20)
+fun(age=19, name='yauso')
+fun('anny', age=10)
+
+#错误的示范
+fun(10, name='anny')
+fun(age=10, 'anny')
+fun(name='anny', 10)
+```
+
+##### 可变参数
+
+当我们不确定需要传入几个参数时就可以使用可变参数，可变参数有两种写法：
+
++ 可变位置参数
+
+  ```python
+  #求和
+  def sum(*nums):
+      n = 0
+      for x in nums:
+      	n += x
+      print(n)
+  #使用
+  sum(1, 2, 3)
+  sum(1, 2, 3, 4, 5 ,6)
+  ```
+
++ 可变关键字参数
+
+  ```python
+  #打印个人信息
+  def printInfo(**person):
+      for k in person:
+      	print(k+':'+person[k], '\r')
+  #使用
+  printInfo(name='jinx', age='19', sex='girl')
+  printInfo(name='yasuo', position='middle', belief='happiness')
+  ```
+
+##### 各种类型的参数混合使用
+
+```python
+#个人信息统计
+#name
+def fun(name, age=18, *dream_datas, **families):
+    pass
+```
+
+#### 参数的元信息（增加代码可读性）
+
+使用函数参数注解是一个很好的办法，它能提示程序员怎样正确使用这个函数。
+
+```python
+def fun(x:int) -> str:
+	print(x)
+
+fun(1)
+fun('a')
+```
+
+python解释器不会对这些注解添加任何的语义。它们不会被类型检查，运行时跟没有加注解之前的效果也没有任何差距。 然而，能够增强代码的可读性。第三方工具和框架可能会对这些注解添加语义。同时它们也会出现在文档中。
+
+#### 内联函数之匿名函数
+
+##### 匿名函数lambda
+
+对于那种可以一句表达式就能定义的函数，我们就可以使用匿名函数来表示，比如两数求和：
+
+```python
+sum = lambda x, y: x + y
+print(sum(1, 2))
+```
+
+匿名函数的表达式就是函数的返回值。
+
+lambda只是Python内联函数的一个，还有其他为了提高效率的内联小函数，如：zip,filter, map, reduce等。
+
+#### 闭包和作用域的问题
+
++ Python搜索变量的LEGB顺序（Local --> Embedded --> Global --> Built-in）
+
++ `global`和`nonlocal`关键字的作用
+
+  `global`：声明或定义全局变量（要么直接使用现有的全局作用域的变量，要么定义一个变量放到全局作用域）。
+
+  `nonlocal`：声明使用嵌套作用域的变量（嵌套作用域必须存在该变量，否则报错）。
+
+#### 装饰器函数：使用装饰器和取消装饰器
+
+
+
+
+
+
+
+
+
